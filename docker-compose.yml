@@ -1,0 +1,25 @@
+version: '2'
+services:
+    monit:
+        build:
+            context: .
+            args:
+                http_proxy: http://192.168.99.1:3128
+        volumes:
+        - /mnt/sda1/var/cache/docker/monit/config:/etc/monit
+        - ./scripts/pushover.sh:/usr/local/bin/pushover.sh
+        - ./monit/pushover.conf:/root/.config/pushover.conf
+        ports:
+        - 36002:2812
+        environment:
+        - http_proxy=http://192.168.99.1:3128
+        - https_proxy=http://192.168.99.1:3128
+        - HTTP_PORT=http://192.168.99.1:3128
+        - HTTPS_PORT=http://192.168.99.1:3128
+
+        # links:
+        # - smtp:smtp.docker
+    # smtp:
+    #     image: namshi/smtp
+    #     env_file:
+    #     - ./docker/smtp.env.ini
